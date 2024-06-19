@@ -1,7 +1,7 @@
 import os
 from PyQt6.QtWidgets import QLabel, QApplication, QMainWindow, QPushButton, QGridLayout, QWidget, QFileDialog, QVBoxLayout
 from PyQt6.QtCore import Qt
-
+import time
 
 app = QApplication([])
 
@@ -33,6 +33,7 @@ class Window(QMainWindow):
             #connect button to event handler
             self.addFolderButton.clicked.connect(self.folderDialogClickHandler)
             self.destFolderButton.clicked.connect(self.destDialogClickHandler)
+            self.backupButton.clicked.connect(self.backupButtonClickHandler)
 
             self.layout.setSpacing(1)
       def folderDialogClickHandler(self):
@@ -66,6 +67,20 @@ class Window(QMainWindow):
                   self.destFolder = str(destDialog.selectedFiles())[1:-1]
                   self.destFolderButton.setText(self.destFolder)
                   print(self.destFolder)
+      def backupButtonClickHandler(self):
+            self.backupButton.setText("Backing Up Files")
+            foldersLen = len(self.selectedFolders)
+            count = 0
+            if self.selectedFolders == []:
+                  self.backupButton.setText("No folders were selected.")
+            elif self.destFolder == "":
+                  self.backupButton.setText("Destination wasn't selected.")
+            else: 
+                  while count <= foldersLen - 1:
+                        os.system(f"cp -r {self.selectedFolders[count]} {self.destFolder}")
+                  self.backupButton.setText("Done.")
+            time.sleep(1)
+            self.backupButton.setText("Backup Files")     
 window = Window()
 window.show()
 app.exec()
