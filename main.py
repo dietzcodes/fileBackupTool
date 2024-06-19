@@ -41,11 +41,13 @@ class Window(QMainWindow):
             if successful:
                   folder = str(folderDialog.selectedFiles())
                   if len(self.foldersList) > 0:
-                        self.foldersList = str(self.foldersList + ", " + folder[1:-1])
+                        self.foldersList = str(self.foldersList + ", " + folder[2:-2])
                   else:
-                        self.foldersList = str(folder[1:-1])
+                        self.foldersList = str(folder[2:-2])
                   
-                  self.selectedFolders.append(folder)
+                  print(folder[1:-1])
+                  
+                  self.selectedFolders.append(folder[2:-2])
                   self.layout.removeWidget(self.folderListWidget)
                   self.folderListWidget = QLabel(self.foldersList)
                   self.layout.addWidget(self.folderListWidget)
