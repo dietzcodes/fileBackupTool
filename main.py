@@ -49,14 +49,14 @@ class Window(QMainWindow):
                   else:
                         self.foldersList = str(folder[2:-2])
                   
-                  print(folder[1:-1])
+                  #print(folder[1:-1])
                   
-                  self.selectedFolders.append(folder[2:-2])
+                  self.selectedFolders.append(folder[1:-1])
                   self.layout.removeWidget(self.folderListWidget)
                   self.folderListWidget = QLabel(self.foldersList)
                   self.layout.addWidget(self.folderListWidget)
 
-                  print(self.selectedFolders)
+                  #print(self.selectedFolders)
       def destDialogClickHandler(self):
             self.destFolder = ""
             destDialog = QFileDialog()
@@ -66,7 +66,7 @@ class Window(QMainWindow):
             if destSuccessful:
                   self.destFolder = str(destDialog.selectedFiles())[1:-1]
                   self.destFolderButton.setText(self.destFolder)
-                  print(self.destFolder)
+                  #print(self.destFolder)
       def backupButtonClickHandler(self):
             self.backupButton.setText("Backing Up Files")
             foldersLen = len(self.selectedFolders)
@@ -76,8 +76,11 @@ class Window(QMainWindow):
             elif self.destFolder == "":
                   self.backupButton.setText("Destination wasn't selected.")
             else: 
-                  while count <= foldersLen - 1:
+                  while count < foldersLen:
+                        print(self.selectedFolders[count])
+                        print(f"cp -r {self.selectedFolders[count]} {self.destFolder}")
                         os.system(f"cp -r {self.selectedFolders[count]} {self.destFolder}")
+                        count = count + 1
                   self.backupButton.setText("Done.")
             time.sleep(1)
             self.backupButton.setText("Backup Files")     
